@@ -3,8 +3,6 @@ services:
   postgresql:
     image: pgvector/pgvector:pg16
     container_name: lobe-postgres
-    ports:
-      - '5432:5432'
     volumes:
       - './data:/var/lib/postgresql/data'
     environment:
@@ -20,9 +18,6 @@ services:
   minio:
     image: minio/minio
     container_name: lobe-minio
-    ports:
-      - '9000:9000'
-      - '9001:9001'
     volumes:
       - './s3_data:/etc/minio/data'
     environment:
@@ -38,9 +33,6 @@ services:
   logto:
     image: svhd/logto
     container_name: lobe-logto
-    ports:
-      - '3001:3001'
-      - '3002:3002'
     depends_on:
       postgresql:
         condition: service_healthy
@@ -54,18 +46,9 @@ services:
   lobe:
     image: lobehub/lobe-chat-database
     container_name: lobe-chat
-    ports:
-      - '3210:3210'
     depends_on:
       - postgresql
       - minio
       - logto
     env_file:
       - .env
-    restart: always
-
-volumes:
-  data:
-    driver: local
-  s3_data:
-    driver: local
