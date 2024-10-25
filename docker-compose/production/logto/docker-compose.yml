@@ -37,10 +37,10 @@ services:
       postgresql:
         condition: service_healthy
     environment:
-      - 'TRUST_PROXY_HEADER=1'
-      - 'DB_URL=postgresql://postgres:uWNZugjBqixf8dxC@postgresql:5432/logto'
-      - 'ENDPOINT=https://lobe-auth-api.example.com'
-      - 'ADMIN_ENDPOINT=https://lobe-auth-ui.example.com'
+      - 'TRUST_PROXY_HEADER=$LOGTO_TRUST_PROXY_HEADER'
+      - 'DB_URL=$LOGTO_DB_URL'
+      - 'ENDPOINT=$LOGTO_ENDPOINT'
+      - 'ADMIN_ENDPOINT=$LOGTO_ADMIN_ENDPOINT'
     entrypoint: ['sh', '-c', 'npm run cli db seed -- --swe && npm start']
 
   lobe:
