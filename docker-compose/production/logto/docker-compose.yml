@@ -26,7 +26,6 @@ services:
     command: >
       server /etc/minio/data --address ":9000" --console-address ":9001"
 
-
   logto:
     image: svhd/logto
     depends_on:
