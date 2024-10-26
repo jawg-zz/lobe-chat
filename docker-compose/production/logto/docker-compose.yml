@@ -6,8 +6,8 @@ services:
     volumes:
       - 'chatdb_data:/var/lib/postgresql/data'
     environment:
-      - 'POSTGRES_DB=lobe'
-      - 'POSTGRES_PASSWORD=uWNZugjBqixf8dxC'
+      - 'POSTGRES_DB=$SERVICE_USER_POSTGRESSQL'
+      - 'POSTGRES_PASSWORD=$SERVICE_PASSWORD_POSTGRESSQL'
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U postgres']
       interval: 5s
@@ -21,10 +21,10 @@ services:
     volumes:
       - 's3_data:/etc/minio/data'
     environment:
-      - 'MINIO_ROOT_USER=YOUR_MINIO_USER'
-      - 'MINIO_ROOT_PASSWORD=YOUR_MINIO_PASSWORD'
-      - 'MINIO_DOMAIN=lobe-s3-api.example.com'
-      - 'MINIO_API_CORS_ALLOW_ORIGIN=https://lobe.example.com' # Your LobeChat's domain name.
+      - 'MINIO_ROOT_USER=${SERVICE_USER_MINIO}'
+      - 'MINIO_ROOT_PASSWORD=${SERVICE_PASSWORD_MINIO}'
+      - 'MINIO_DOMAIN=${SERVICE_FQDN_API}'
+      - 'MINIO_API_CORS_ALLOW_ORIGIN=https:${APP_URL}' # Your LobeChat's domain name.
     restart: always
     command: >
       server /etc/minio/data --address ":9000" --console-address ":9001"
@@ -37,10 +37,10 @@ services:
       postgresql:
         condition: service_healthy
     environment:
-      - 'TRUST_PROXY_HEADER=$LOGTO_TRUST_PROXY_HEADER'
-      - 'DB_URL=$LOGTO_DB_URL'
-      - 'ENDPOINT=$LOGTO_ENDPOINT'
-      - 'ADMIN_ENDPOINT=$LOGTO_ADMIN_ENDPOINT'
+      - 'TRUST_PROXY_HEADER=1'
+      - 'DB_URL='postgresql://'.'$SERVICE_USER_POSTGRESSQL'.':'.'$SERVICE_PASSWORD_POSTGRESSQ'.'@postgresql:5432/logto''
+      - 'ENDPOINT=${SERVICE_FQDN_ENDPOINT}'
+      - 'ADMIN_ENDPOINT=${SERVICE_FQDN_ADMIN}'
     entrypoint: ['sh', '-c', 'npm run cli db seed -- --swe && npm start']
 
   lobe:
