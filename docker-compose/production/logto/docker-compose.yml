@@ -2,7 +2,6 @@ name: lobe-chat-database
 services:
   postgresql:
     image: pgvector/pgvector:pg16
-    container_name: lobe-postgres
     volumes:
       - 'chatdb_data:/var/lib/postgresql/data'
     environment:
@@ -13,16 +12,13 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    restart: always
-
+      
   minio:
     image: minio/minio
-    container_name: lobe-minio
     volumes:
       - 's3_data:/etc/minio/data'
     environment:
-      -  SERVICE_FQDN_API
-      - 'MINIO_ROOT_USER=${SERVICE_USER_MINIO}'
+      - 'MINIO_ROOT_USER=$SERVICE_USER_MINIO'
       - 'MINIO_ROOT_PASSWORD=$SERVICE_PASSWORD_MINIO'
       - 'MINIO_DOMAIN=$SERVICE_FQDN_API'
       - 'MINIO_API_CORS_ALLOW_ORIGIN=https:${APP_URL}' # Your LobeChat's domain name.
@@ -33,13 +29,11 @@ services:
 
   logto:
     image: svhd/logto
-    container_name: lobe-logto
     depends_on:
       postgresql:
         condition: service_healthy
     environment:
-      -  SERVICE_FQDN_ADMIN
-      -  SERVICE_FQDN_ENDPOINT
+      - ''DB_URL=postgresql://postgres:'.'$SERVICE_PASSWORD_POSTGRESQL'.'@postgresql:5432/logto''
       - 'TRUST_PROXY_HEADER=1'
       - 'ENDPOINT=$SERVICE_FQDN_ENDPOINT'
       - 'ADMIN_ENDPOINT=$SERVICE_FQDN_ADMIN'
@@ -47,7 +41,6 @@ services:
 
   lobe:
     image: lobehub/lobe-chat-database
-    container_name: lobe-chat
     depends_on:
       - postgresql
       - minio
