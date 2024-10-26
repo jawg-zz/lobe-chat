@@ -38,7 +38,7 @@ services:
         condition: service_healthy
     environment:
       - 'TRUST_PROXY_HEADER=1'
-      - 'DB_URL='postgresql://'.'$SERVICE_USER_POSTGRESSQL'.':'.'$SERVICE_PASSWORD_POSTGRESSQL'.'@postgresql:5432/logto''
+      - 'DB_URL='postgresql://'.'${SERVICE_USER_POSTGRESSQL}'.':'.'${SERVICE_PASSWORD_POSTGRESSQL}'.'@postgresql:5432/logto''
       - 'ENDPOINT=${SERVICE_FQDN_ENDPOINT}'
       - 'ADMIN_ENDPOINT=${SERVICE_FQDN_ADMIN}'
     entrypoint: ['sh', '-c', 'npm run cli db seed -- --swe && npm start']
