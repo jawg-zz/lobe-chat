@@ -19,11 +19,9 @@ services:
     volumes:
       - 's3_data:/etc/minio/data'
     environment:
-      - SERVICE_FQDN_API_9000
-      - SERVICE_FQDN_S3ADMIN_9001
-      - MINIO_ROOT_USER=$SERVICE_USER_MINIO
-      - MINIO_ROOT_PASSWORD=$SERVICE_PASSWORD_MINIO
-      - MINIO_DOMAIN=$SERVICE_FQDN_API_9000
+      - MINIO_ROOT_USER=root
+      - MINIO_ROOT_PASSWORD=uWNZugjBqixf8dxC
+      - MINIO_DOMAIN=https://s3api.spidmax.com
       - 'MINIO_API_CORS_ALLOW_ORIGIN=https:${APP_URL}'
     restart: always
     command: "server /etc/minio/data --address \":9000\" --console-address \":9001\"\n"
@@ -33,12 +31,10 @@ services:
       postgresql:
         condition: service_healthy
     environment:
-      -  SERVICE_FQDN_ENDPOINT_3001
-      -  SERVICE_FQDN_ADMIN_3002
       - 'DB_URL=postgresql://postgres:uWNZugjBqixf8dxC@postgresql:5432/logto'
       - TRUST_PROXY_HEADER=1
-      - ENDPOINT=$SERVICE_FQDN_ENDPOINT_3001
-      - ADMIN_ENDPOINT=$SERVICE_FQDN_ADMIN_3002
+      - ENDPOINT=https://logto-api.spidmax.com
+      - ADMIN_ENDPOINT=https://logto-admin.spidmax.com
     entrypoint:
       - sh
       - '-c'
