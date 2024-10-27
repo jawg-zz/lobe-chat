@@ -34,7 +34,7 @@ services:
       - 'DB_URL=postgresql://postgres:uWNZugjBqixf8dxC@postgresql:5432/logto'
       - TRUST_PROXY_HEADER=1
       - ENDPOINT=https://logto-api.spidmax.com
-      - ADMIN_ENDPOINT=https://logto-admin.spidmax.com
+      - ADMIN_ENDPOINT=https://logto.spidmax.com
     entrypoint:
       - sh
       - '-c'
