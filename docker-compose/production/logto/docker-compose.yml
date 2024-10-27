@@ -22,7 +22,7 @@ services:
       - MINIO_ROOT_USER=root
       - MINIO_ROOT_PASSWORD=uWNZugjBqixf8dxC
       - MINIO_DOMAIN=https://s3api.spidmax.com
-      - 'MINIO_API_CORS_ALLOW_ORIGIN=${APP_URL}'
+      - MINIO_API_CORS_ALLOW_ORIGIN=https://chat.spidmax.com
     restart: always
     command: "server /etc/minio/data --address \":9000\" --console-address \":9001\"\n"
   logto:
