@@ -19,6 +19,7 @@ services:
     volumes:
       - 's3_data:/etc/minio/data'
     environment:
+      - SERVICE_FQDN_API_9000
       - SERVICE_FQDN_S3ADMIN_9001
       - MINIO_ROOT_USER=$SERVICE_USER_MINIO
       - MINIO_ROOT_PASSWORD=$SERVICE_PASSWORD_MINIO
@@ -32,6 +33,8 @@ services:
       postgresql:
         condition: service_healthy
     environment:
+      -  SERVICE_FQDN_ENDPOINT_3001
+      -  SERVICE_FQDN_ADMIN_3002
       - 'DB_URL=postgresql://postgres:uWNZugjBqixf8dxC@postgresql:5432/logto'
       - TRUST_PROXY_HEADER=1
       - ENDPOINT=$SERVICE_FQDN_ENDPOINT_3001
